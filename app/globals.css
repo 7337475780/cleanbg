@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* =====================================================
    cleanBG — Design System CSS Variables (Phase 2)
@@ -7,21 +8,21 @@
 
 :root {
   /* Backgrounds */
-  --color-bg-base: #09090B;
-  --color-bg-surface: #111827;
-  --color-bg-elevated: #18181B;
-  --color-bg-overlay: #1F2937;
+  --color-bg-base: #FFFFFF;
+  --color-bg-surface: #FAFAFA;
+  --color-bg-elevated: #F4F4F5;
+  --color-bg-overlay: #E4E4E7;
 
   /* Borders */
-  --color-border: #27272A;
-  --color-border-subtle: #18181B;
-  --color-border-strong: #3F3F46;
+  --color-border: #E4E4E7;
+  --color-border-subtle: #F4F4F5;
+  --color-border-strong: #D4D4D8;
 
   /* Text */
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #E4E4E7;
-  --color-text-muted: #9CA3AF;
-  --color-text-disabled: #52525B;
+  --color-text-primary: #09090B;
+  --color-text-secondary: #27272A;
+  --color-text-muted: #71717A;
+  --color-text-disabled: #A1A1AA;
 
   /* Brand */
   --color-blue-400: #60A5FA;
@@ -40,10 +41,10 @@
   --color-rose-500: #F43F5E;
 
   /* Overlays */
-  --overlay-subtle: rgba(255,255,255,0.03);
-  --overlay-low: rgba(255,255,255,0.05);
-  --overlay-medium: rgba(255,255,255,0.08);
-  --overlay-high: rgba(255,255,255,0.12);
+  --overlay-subtle: rgba(0,0,0,0.03);
+  --overlay-low: rgba(0,0,0,0.05);
+  --overlay-medium: rgba(0,0,0,0.08);
+  --overlay-high: rgba(0,0,0,0.12);
 
   /* Focus */
   --color-focus: rgba(59,130,246,0.5);
@@ -58,14 +59,16 @@
   --radius-xl: 16px; --radius-2xl: 20px; --radius-3xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
-  --shadow-lg: 0 10px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-xl: 0 20px 60px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.3);
-  --shadow-glow-blue: 0 0 30px rgba(59,130,246,0.3);
-  --shadow-glow-purple: 0 0 30px rgba(139,92,246,0.3);
-  --shadow-glow-cyan: 0 0 30px rgba(6,182,212,0.2);
+  /* Shadows (Premium diffuse) */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+  --shadow-xl: 0 24px 64px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.04);
+  
+  /* Dark mode specific glows */
+  --shadow-glow-blue: 0 0 40px rgba(59,130,246,0.15), 0 0 20px rgba(59,130,246,0.1);
+  --shadow-glow-purple: 0 0 40px rgba(139,92,246,0.15), 0 0 20px rgba(139,92,246,0.1);
+  --shadow-glow-cyan: 0 0 40px rgba(6,182,212,0.15), 0 0 20px rgba(6,182,212,0.1);
 
   /* Z-index */
   --z-nav: 1000;
@@ -84,6 +87,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
@@ -112,21 +116,21 @@ body {
    ===================================================== */
 
 .gradient-text {
-  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #A855F7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-blue-purple {
-  background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 100%);
+  background: linear-gradient(135deg, #60A5FA 0%, #C084FC 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-bg-primary {
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #7C3AED 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #4F46E5 50%, #7C3AED 100%);
 }
 
 .glass {
@@ -140,12 +144,12 @@ body {
 }
 
 .card-hover {
-  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-hover:hover {
-  border-color: rgba(59,130,246,0.3);
-  box-shadow: var(--shadow-glow-blue);
-  transform: translateY(-2px);
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 12px 32px rgba(59,130,246,0.1), 0 4px 12px rgba(59,130,246,0.05);
+  transform: translateY(-4px);
 }
 
 /* =====================================================
