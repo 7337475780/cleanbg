@@ -1,4 +1,5 @@
 import { TestimonialCarousel } from "./TestimonialCarousel";
+import ScrollReveal from "./ScrollReveal";
 
 const testimonials = [
   {
@@ -53,16 +54,19 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-24 md:py-32 bg-gray-50/50 dark:bg-[#09090B] overflow-hidden">
+    <section className="py-24 md:py-28 bg-gray-50/40 dark:bg-[#09090B] border-y border-gray-100 dark:border-white/[0.04] overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-6">
-        <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-6">
-            Loved by <span className="gradient-text">creators</span> & teams
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-[#A1A1AA] leading-relaxed">
-            Join thousands of professionals who have already upgraded their workflow with cleanBG.
+        <ScrollReveal className="text-center max-w-xl mx-auto mb-14 md:mb-16">
+          <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-gray-400 dark:text-gray-500 mb-3">
+            Testimonials
           </p>
-        </div>
+          <h2 className="text-3xl md:text-[44px] font-extrabold tracking-[-0.03em] text-gray-900 dark:text-white">
+            Loved by creators & teams
+          </h2>
+          <p className="mt-4 text-[15px] text-gray-500 dark:text-gray-400 leading-relaxed">
+            Join over 500,000 professionals who have transformed their workflow.
+          </p>
+        </ScrollReveal>
 
         <TestimonialCarousel testimonials={testimonials} />
       </div>

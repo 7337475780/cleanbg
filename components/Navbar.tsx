@@ -1,4 +1,4 @@
-import { ScrollLink as Link } from "./ScrollLink";
+import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import { NavbarInteractive } from "./NavbarInteractive";
@@ -8,17 +8,16 @@ const navLinks = [
   { href: "/#features", label: "Features" },
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/#pricing", label: "Pricing" },
-  { href: "/#api", label: "API" },
   { href: "/#faq", label: "FAQ" },
 ];
 
 export default function Navbar() {
   const logo = (
-    <Link href="/" className="flex items-center gap-2.5 group" aria-label="cleanBG home">
-      <div className="relative h-8 w-8 md:h-9 md:w-9">
-        <Image src="/logo.png" alt="cleanBG" fill sizes="36px" className="object-contain" priority />
+    <Link href="/" className="flex items-center gap-2 group flex-shrink-0" aria-label="cleanBG home">
+      <div className="relative h-7 w-7">
+        <Image src="/logo.png" alt="cleanBG" fill sizes="28px" className="object-contain" priority />
       </div>
-      <span className="text-[17px] font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+      <span className="text-[15px] font-bold tracking-tight text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
         CleanBG
       </span>
     </Link>
@@ -26,27 +25,26 @@ export default function Navbar() {
 
   const desktopNav = (
     <>
-      <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+      <nav className="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
         {navLinks.map((link) => (
-          <Link
+          <a
             key={link.href}
             href={link.href}
-            className="px-4 py-2 text-[14px] font-medium text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="px-4 py-2 text-[13.5px] font-medium text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-900 dark:hover:text-white transition-all duration-150"
           >
             {link.label}
-          </Link>
+          </a>
         ))}
       </nav>
 
-      <div className="hidden lg:flex items-center gap-4">
+      <div className="hidden lg:flex items-center gap-3">
         <ThemeToggle />
         <Link
           href="/#upload"
-          className="group relative flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white rounded-full overflow-hidden shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-px"
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-[13.5px] font-semibold text-white rounded-lg gradient-bg-primary shadow-[0_2px_12px_rgba(37,99,235,0.3)] hover:shadow-[0_4px_16px_rgba(37,99,235,0.4)] hover:-translate-y-px transition-all duration-200"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 transition-transform duration-300 group-hover:scale-105" />
-          <Sparkles className="w-4 h-4 relative z-10" />
-          <span className="relative z-10">Start Free</span>
+          <Sparkles className="w-3.5 h-3.5" />
+          Start Free
         </Link>
       </div>
     </>

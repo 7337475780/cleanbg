@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, ReactNode } from "react";
-import { ScrollLink as Link } from "./ScrollLink";
 import { Menu, X, Sparkles } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -16,7 +15,7 @@ export function NavbarInteractive({ navLinks, logo, desktopNav }: NavbarInteract
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -30,69 +29,80 @@ export function NavbarInteractive({ navLinks, logo, desktopNav }: NavbarInteract
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
+  const handleNavClick = (href: string) => {
+    setMobileOpen(false);
+    const id = href.replace(/.*#/, "");
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <header
         role="banner"
-        className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 animate-in fade-in slide-in-from-top-4 ${
+        className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
           scrolled
-            ? "border-b border-gray-200/80 dark:border-white/10 bg-white/80 dark:bg-[#09090B]/80 backdrop-blur-2xl saturate-150 shadow-sm"
+            ? "border-b border-gray-200/60 dark:border-white/[0.06] bg-white/90 dark:bg-[#09090B]/90 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.04)]"
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-[1280px] mx-auto px-6 h-16 md:h-20 flex items-center justify-between transition-all duration-300">
+        <div className="max-w-[1280px] mx-auto px-6 h-14 md:h-16 flex items-center justify-between relative">
           {logo}
           {desktopNav}
 
-          <div className="flex items-center gap-4 lg:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
             <ThemeToggle />
             <button
-              className="p-2 -mr-2 text-gray-700 dark:text-gray-300"
+              className="p-2 -mr-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-white/8 transition-colors"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
+              aria-expanded={mobileOpen}
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-[1001] lg:hidden">
+        <div className="fixed inset-0 z-[1001] lg:hidden" aria-modal="true" role="dialog">
           <div
-            className="absolute inset-0 bg-gray-900/40 dark:bg-black/60 backdrop-blur-sm animate-in fade-in"
+            className="absolute inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="absolute top-0 right-0 bottom-0 w-[280px] bg-white dark:bg-[#09090B] border-l border-gray-200 dark:border-white/10 shadow-2xl flex flex-col animate-in slide-in-from-right">
-            <div className="h-16 px-6 flex items-center justify-end border-b border-gray-100 dark:border-white/5">
+          <div className="absolute top-0 right-0 bottom-0 w-[260px] bg-white dark:bg-[#0A0A0F] border-l border-gray-100 dark:border-white/[0.06] shadow-2xl flex flex-col">
+            <div className="h-14 px-4 flex items-center justify-between border-b border-gray-100 dark:border-white/[0.06]">
+              <span className="text-[13px] font-semibold text-gray-900 dark:text-white">Navigation</span>
               <button
-                className="p-2 -mr-2 text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                className="p-1.5 text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-white/8 transition-colors"
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4.5 h-4.5" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto py-6 px-6 flex flex-col gap-6">
+            <nav className="flex-1 overflow-y-auto p-4 flex flex-col gap-1">
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.href}
                   href={link.href}
-                  className="text-lg font-medium text-gray-700 dark:text-gray-300"
-                  onClick={() => setMobileOpen(false)}
+                  className="px-3 py-2.5 text-[14px] font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg transition-colors"
+                  onClick={() => handleNavClick(link.href)}
                 >
                   {link.label}
-                </Link>
+                </a>
               ))}
-              <div className="h-px bg-gray-100 dark:bg-white/10 my-2" />
-              <Link
+            </nav>
+            <div className="p-4 border-t border-gray-100 dark:border-white/[0.06]">
+              <a
                 href="/#upload"
-                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl gradient-bg-primary text-white font-semibold shadow-md"
-                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg gradient-bg-primary text-white text-[14px] font-semibold shadow-[0_2px_12px_rgba(37,99,235,0.3)]"
+                onClick={() => handleNavClick("/#upload")}
               >
-                <Sparkles className="w-4 h-4" /> Try for Free
-              </Link>
+                <Sparkles className="w-3.5 h-3.5" />
+                Start for Free
+              </a>
             </div>
           </div>
         </div>
