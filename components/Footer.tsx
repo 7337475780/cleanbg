@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ScrollLink as Link } from "./ScrollLink";
 import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 
@@ -36,9 +36,9 @@ function MailIcon({ className }: { className?: string }) {
 
 const footerLinks = {
   Product: [
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "API", href: "#api" },
+    { label: "Features", href: "/#features" },
+    { label: "Pricing", href: "/#pricing" },
+    { label: "API", href: "/#api" },
     { label: "Changelog", href: "/changelog" },
     { label: "Status", href: "/status" },
   ],

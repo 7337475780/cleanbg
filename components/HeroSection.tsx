@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ScrollLink as Link } from "./ScrollLink";
 import { Play, CheckCircle } from "lucide-react";
 import HeroWorkflowCard from "./HeroWorkflowCard";
 import AnimatedBackground from "./AnimatedBackground";
@@ -37,7 +37,7 @@ export default function HeroSection() {
 
           <FadeIn delay={0.3} className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
             <Link
-              href="#upload"
+              href="/#upload"
               className="w-full sm:w-auto text-center px-8 py-4 text-base font-semibold text-white rounded-xl gradient-bg-primary shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-px transition-all duration-200"
             >
               Start Free

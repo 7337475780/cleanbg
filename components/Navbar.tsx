@@ -1,15 +1,15 @@
-import Link from "next/link";
+import { ScrollLink as Link } from "./ScrollLink";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import { NavbarInteractive } from "./NavbarInteractive";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
-  { href: "#features", label: "Features" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#api", label: "API" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How It Works" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/#api", label: "API" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export default function Navbar() {
@@ -41,7 +41,7 @@ export default function Navbar() {
       <div className="hidden lg:flex items-center gap-4">
         <ThemeToggle />
         <Link
-          href="#upload"
+          href="/#upload"
           className="group relative flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white rounded-full overflow-hidden shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-px"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 transition-transform duration-300 group-hover:scale-105" />

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ScrollLink as Link } from "./ScrollLink";
 import { ArrowRight, Sparkles } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
@@ -57,14 +57,14 @@ export default function CTASection() {
             {/* CTA Buttons */}
             <ScrollReveal delay={0.25} className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="#upload"
+                href="/#upload"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white rounded-xl gradient-bg-primary shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-px transition-all duration-200"
               >
                 Upload an Image
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="#pricing"
+                href="/#pricing"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-gray-700 dark:text-gray-200 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/10 hover:border-gray-300 dark:hover:border-white/20 rounded-xl transition-all duration-200"
               >
                 View Pricing

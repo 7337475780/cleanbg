@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, ReactNode } from "react";
-import Link from "next/link";
+import { ScrollLink as Link } from "./ScrollLink";
 import { Menu, X, Sparkles } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -87,7 +87,7 @@ export function NavbarInteractive({ navLinks, logo, desktopNav }: NavbarInteract
               ))}
               <div className="h-px bg-gray-100 dark:bg-white/10 my-2" />
               <Link
-                href="#upload"
+                href="/#upload"
                 className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl gradient-bg-primary text-white font-semibold shadow-md"
                 onClick={() => setMobileOpen(false)}
               >

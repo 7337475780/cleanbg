@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ScrollLink as Link } from "./ScrollLink";
 import { Check, X, Sparkles, ArrowRight } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
@@ -30,7 +30,7 @@ const plans = [
     period: "per month",
     description: "For professionals and growing teams who need more power.",
     cta: "Join Waitlist",
-    ctaHref: "#waitlist",
+    ctaHref: "/#waitlist",
     featured: true,
     badge: "Coming Soon",
     features: [
