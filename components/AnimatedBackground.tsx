@@ -1,9 +1,21 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 export default function AnimatedBackground() {
   const prefersReducedMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Delay rendering heavy animations to optimize LCP
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   if (prefersReducedMotion) {
     return (

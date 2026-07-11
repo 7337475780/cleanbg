@@ -1,10 +1,7 @@
-"use client";
-
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 
-import Footer from "@/components/Footer";
 
 // Dynamic imports for code-split heavy sections
 const FeaturesSection = dynamic(() => import("@/components/FeaturesSection"));
@@ -15,6 +12,7 @@ const PricingSection = dynamic(() => import("@/components/PricingSection"));
 const StatsSection = dynamic(() => import("@/components/StatsSection"));
 const FAQSection = dynamic(() => import("@/components/FAQSection"));
 const CTASection = dynamic(() => import("@/components/CTASection"));
+const Footer = dynamic(() => import("@/components/Footer"));
 
 export default function LandingPage() {
   return (

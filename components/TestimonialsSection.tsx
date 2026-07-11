@@ -1,9 +1,4 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { TestimonialCarousel } from "./TestimonialCarousel";
 
 const testimonials = [
   {
@@ -57,159 +52,19 @@ const testimonials = [
 ];
 
 export default function TestimonialsSection() {
-  const [current, setCurrent] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
-
-  const next = useCallback(() => setCurrent(c => (c + 1) % testimonials.length), []);
-  const prev = useCallback(() => setCurrent(c => (c - 1 + testimonials.length) % testimonials.length), []);
-
-  useEffect(() => {
-    if (!autoplay) return;
-    const id = setInterval(next, 5000);
-    return () => clearInterval(id);
-  }, [autoplay, next]);
-
-  const visibleIndices = [
-    (current - 1 + testimonials.length) % testimonials.length,
-    current,
-    (current + 1) % testimonials.length,
-  ];
-
   return (
-    <section className="py-24 px-6 overflow-hidden relative bg-white dark:bg-[#09090B]" aria-label="Testimonials">
-      <div className="max-w-[1280px] mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, ease: [0, 0, 0.2, 1] }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block mb-4 text-[11px] font-semibold tracking-[0.08em] uppercase text-amber-500">
-            Loved By Professionals
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Trusted by <span className="gradient-text">Thousands</span>
+    <section className="py-24 md:py-32 bg-gray-50/50 dark:bg-[#09090B] overflow-hidden">
+      <div className="max-w-[1280px] mx-auto px-6">
+        <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-6">
+            Loved by <span className="gradient-text">creators</span> & teams
           </h2>
-          <div className="flex items-center justify-center gap-1 mb-2">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
-            ))}
-          </div>
-          <p className="text-sm text-gray-500 dark:text-[#9CA3AF]">4.9/5 average from 15,000+ reviews</p>
-        </motion.div>
-
-        {/* Carousel */}
-        <div
-          className="relative"
-          onMouseEnter={() => setAutoplay(false)}
-          onMouseLeave={() => setAutoplay(true)}
-        >
-          {/* Cards */}
-          {/* Native scroll carousel (Mobile) */}
-          <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-4 pb-8 -mx-6 px-6 touch-pan-x" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-            {testimonials.map((t, i) => (
-              <div key={i} className="min-w-[85vw] snap-center relative p-6 rounded-2xl border border-gray-200 dark:border-[#27272A] bg-white dark:bg-[#111827] shadow-sm flex flex-col">
-                  {/* Quote */}
-                  <div className="mb-5 flex-1">
-                    <div className="flex gap-0.5 mb-4">
-                      {Array.from({ length: t.rating }).map((_, j) => (
-                        <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
-                  </div>
-                  {/* Author */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-[#27272A] mt-auto">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-200 dark:border-[#3F3F46]">
-                      <Image src={t.avatar} alt={t.name} fill sizes="40px" className="object-cover" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">{t.name}</p>
-                      <p className="text-xs text-gray-500 dark:text-[#9CA3AF]">{t.role} · {t.company}</p>
-                    </div>
-                  </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Grid carousel (Tablet/Desktop) */}
-          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-5">
-            {visibleIndices.map((idx, pos) => {
-              const t = testimonials[idx];
-              const isCenter = pos === 1;
-              return (
-                <motion.div
-                  key={`${idx}-${current}`}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.4, ease: [0, 0, 0.2, 1] }}
-                  className={`relative p-6 rounded-2xl border transition-all duration-300 flex flex-col
-                    ${pos === 2 ? "hidden lg:flex" : "flex"}
-                    ${isCenter
-                      ? "border-blue-200 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-500/10 shadow-md shadow-blue-500/10 lg:opacity-100"
-                      : "border-gray-200 dark:border-[#27272A] bg-white dark:bg-[#111827] lg:opacity-60 lg:hover:opacity-100 shadow-sm"
-                    }`}
-                >
-                  {/* Quote */}
-                  <div className="mb-5 flex-1">
-                    <div className="flex gap-0.5 mb-4">
-                      {Array.from({ length: t.rating }).map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
-                  </div>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-[#27272A] mt-auto">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-200 dark:border-[#3F3F46]">
-                      <Image src={t.avatar} alt={t.name} fill sizes="40px" className="object-cover" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">{t.name}</p>
-                      <p className="text-xs text-gray-500 dark:text-[#9CA3AF]">{t.role} · {t.company}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Controls */}
-          <div className="hidden md:flex items-center justify-center gap-4 mt-10">
-            <button
-              onClick={prev}
-              className="w-9 h-9 rounded-full border border-gray-200 dark:border-[#27272A] bg-white dark:bg-[#18181B] flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#3F3F46] transition-all hover:bg-gray-50 dark:hover:bg-white/5 shadow-sm"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-
-            {/* Dots */}
-            <div className="flex gap-1.5">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`transition-all duration-300 rounded-full ${
-                    i === current ? "w-6 h-2 bg-blue-500" : "w-2 h-2 bg-gray-200 dark:bg-[#27272A] hover:bg-gray-300 dark:hover:bg-[#3F3F46]"
-                  }`}
-                  aria-label={`Testimonial ${i + 1}`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={next}
-              className="w-9 h-9 rounded-full border border-gray-200 dark:border-[#27272A] bg-white dark:bg-[#18181B] flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-[#3F3F46] transition-all hover:bg-gray-50 dark:hover:bg-white/5 shadow-sm"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+          <p className="text-lg text-gray-600 dark:text-[#A1A1AA] leading-relaxed">
+            Join thousands of professionals who have already upgraded their workflow with cleanBG.
+          </p>
         </div>
+
+        <TestimonialCarousel testimonials={testimonials} />
       </div>
     </section>
   );

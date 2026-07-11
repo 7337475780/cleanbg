@@ -1,9 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import { FAQAccordion } from "./FAQAccordion";
 
 const faqs = [
   {
@@ -44,75 +40,37 @@ const faqs = [
   },
 ];
 
-function FAQItem({ q, a, isOpen, onToggle }: {
-  q: string; a: string; isOpen: boolean; onToggle: () => void;
-}) {
-  return (
-    <div className="border-b border-gray-100 dark:border-white/10 last:border-0">
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 py-4 md:py-5 min-h-[56px] text-left group"
-        aria-expanded={isOpen}
-      >
-        <span className={`text-base font-medium transition-colors duration-200 ${isOpen ? "text-gray-900 dark:text-white" : "text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white"}`}>
-          {q}
-        </span>
-        <span className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center border transition-all duration-200
-          ${isOpen ? "bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/30 text-blue-500 dark:text-blue-400" : "border-gray-200 dark:border-[#3F3F46] text-gray-400 dark:text-[#52525B] group-hover:border-gray-300 dark:group-hover:border-[#52525B] group-hover:text-gray-600 dark:group-hover:text-[#A1A1AA]"}`}>
-          {isOpen ? <Minus className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
-        </span>
-      </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
-            className="overflow-hidden"
-          >
-            <p className="pb-5 text-sm text-gray-500 dark:text-[#9CA3AF] leading-relaxed max-w-[600px]">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   return (
-    <section id="faq" className="py-24 px-6 bg-gray-50 dark:bg-[#09090B] border-t border-gray-200 dark:border-[#27272A]" aria-label="Frequently asked questions">
-      <div className="max-w-[768px] mx-auto">
-        <ScrollReveal>
-          <div className="text-center mb-14">
-            <span className="inline-block mb-4 text-[11px] font-semibold tracking-[0.08em] uppercase text-purple-500 dark:text-purple-400">
-              FAQ
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Everything You <span className="gradient-text">Need to Know</span>
+    <section id="faq" className="py-24 md:py-32 px-6 bg-white dark:bg-[#09090B] border-y border-gray-100 dark:border-white/5" aria-label="FAQ">
+      <div className="max-w-[1280px] mx-auto">
+        <div className="flex flex-col lg:flex-row items-start gap-16 lg:gap-24">
+          
+          <ScrollReveal delay={0} className="w-full lg:w-[40%] flex-shrink-0">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-6">
+              Frequently asked<br className="hidden lg:block" />
+              <span className="gradient-text">questions</span>
             </h2>
-            <p className="text-gray-500 dark:text-[#9CA3AF]">
-              Can&apos;t find the answer you&apos;re looking for?{" "}
-              <a href="mailto:hello@cleanbg.io" className="text-blue-500 hover:text-blue-600 underline underline-offset-2 transition-colors">
-                Contact our support team
-              </a>
+            <p className="text-lg text-gray-600 dark:text-[#A1A1AA] leading-relaxed mb-8">
+              Everything you need to know about the product, billing, and how we protect your data.
             </p>
-          </div>
-        </ScrollReveal>
+            <div className="p-6 md:p-8 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Still have questions?</h3>
+              <p className="text-sm text-gray-500 dark:text-[#A1A1AA] mb-4">
+                Can't find the answer you're looking for? Please chat to our friendly team.
+              </p>
+              <a href="mailto:support@cleanbg.io" className="inline-flex items-center text-sm font-semibold text-blue-500 hover:text-blue-600 transition-colors">
+                Contact Support →
+              </a>
+            </div>
+          </ScrollReveal>
 
-        <div className="rounded-2xl border border-gray-200 dark:border-[#27272A] bg-white dark:bg-[#111827] px-6 sm:px-8 shadow-sm">
-          {faqs.map((faq, i) => (
-            <ScrollReveal key={i} delay={i * 0.05}>
-              <FAQItem
-                q={faq.q}
-                a={faq.a}
-                isOpen={openIndex === i}
-                onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-              />
-            </ScrollReveal>
-          ))}
+          <ScrollReveal delay={0.1} className="w-full lg:w-[60%] flex-1">
+            <div className="bg-white dark:bg-[#18181B] rounded-3xl border border-gray-200 dark:border-white/10 shadow-sm p-4 md:p-8">
+              <FAQAccordion faqs={faqs} />
+            </div>
+          </ScrollReveal>
+
         </div>
       </div>
     </section>

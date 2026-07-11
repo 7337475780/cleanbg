@@ -1,6 +1,3 @@
-"use client";
-
-import { motion, Variants } from "framer-motion";
 import { Layers, Wand2, Zap, FileImage, Shield } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
@@ -45,15 +42,7 @@ const colorMap: Record<string, { bg: string; icon: string; border: string }> = {
   amber:  { bg: "bg-amber-50 dark:bg-amber-500/10",  icon: "text-amber-500 dark:text-amber-400",  border: "border-amber-100 dark:border-amber-500/20" },
 };
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.05 } },
-};
 
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0, 0, 0.2, 1] } },
-};
 
 export default function FeaturesSection() {
   return (
@@ -70,35 +59,28 @@ export default function FeaturesSection() {
           </div>
         </ScrollReveal>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feat, idx) => {
             const Icon = feat.icon;
             const theme = colorMap[feat.color];
             
             return (
-              <motion.div
-                key={idx}
-                variants={cardVariant}
-                whileHover={{ y: -5, scale: 1.01 }}
-                className={`group flex flex-col p-8 rounded-3xl bg-white dark:bg-[#18181B] border transition-all duration-300 ease-out shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:shadow-none hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] ${theme.border} hover:border-gray-300 dark:hover:border-white/20`}
-              >
+              <ScrollReveal key={idx} delay={idx * 0.1}>
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 ${theme.bg} ${theme.border} border`}
+                  className={`group flex flex-col p-8 rounded-3xl bg-white dark:bg-[#18181B] border transition-all duration-300 ease-out shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:shadow-none hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1 hover:scale-[1.01] ${theme.border} hover:border-gray-300 dark:hover:border-white/20`}
                 >
-                  <Icon className={`w-5 h-5 ${theme.icon}`} strokeWidth={2} />
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 ${theme.bg} ${theme.border} border`}
+                  >
+                    <Icon className={`w-5 h-5 ${theme.icon}`} strokeWidth={2} />
+                  </div>
+                  <h3 className="text-[15px] font-semibold text-gray-900 dark:text-white mb-1.5">{feat.title}</h3>
+                  <p className="text-[13px] text-gray-500 dark:text-[#9CA3AF] leading-relaxed flex-1">{feat.description}</p>
                 </div>
-                <h3 className="text-[15px] font-semibold text-gray-900 dark:text-white mb-1.5">{feat.title}</h3>
-                <p className="text-[13px] text-gray-500 dark:text-[#9CA3AF] leading-relaxed flex-1">{feat.description}</p>
-              </motion.div>
+              </ScrollReveal>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

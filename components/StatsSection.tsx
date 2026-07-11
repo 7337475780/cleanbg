@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Users, ImageIcon, Globe2, Clock } from "lucide-react";
 
 const stats = [
@@ -11,6 +8,7 @@ const stats = [
 ];
 
 import Counter from "./Counter";
+import ScrollReveal from "./ScrollReveal";
 
 export default function StatsSection() {
   return (
@@ -25,12 +23,9 @@ export default function StatsSection() {
             const suffix = stat.value >= 1000000 ? "M+" : stat.value >= 1000 ? "K+" : stat.suffix;
             
             return (
-              <motion.div
+              <ScrollReveal
                 key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: [0, 0, 0.2, 1] }}
+                delay={i * 0.1}
                 className="flex flex-col items-center text-center group"
               >
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 border border-blue-100 dark:border-blue-500/20">
@@ -46,7 +41,7 @@ export default function StatsSection() {
                 <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {stat.label}
                 </div>
-              </motion.div>
+              </ScrollReveal>
             );
           })}
         </div>

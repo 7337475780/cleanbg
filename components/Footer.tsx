@@ -88,10 +88,7 @@ export default function Footer() {
             {/* Newsletter */}
             <div className="mb-6">
               <p className="text-xs font-semibold text-gray-900 dark:text-white mb-2.5 uppercase tracking-wider">Stay in the loop</p>
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                className="flex gap-2"
-              >
+              <div className="flex gap-2">
                 <input
                   type="email"
                   placeholder="your@email.com"
@@ -99,12 +96,12 @@ export default function Footer() {
                   className="flex-1 px-3.5 py-2.5 text-sm rounded-lg bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.05] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-[#52525B] focus:outline-none focus:border-blue-500/60 focus:ring-4 focus:ring-blue-500/10 dark:focus:ring-blue-500/10 transition-all shadow-sm"
                 />
                 <button
-                  type="submit"
+                  type="button"
                   className="px-4 py-2 text-sm font-semibold text-white rounded-lg gradient-bg-primary shadow-sm hover:shadow hover:-translate-y-px transition-all duration-200"
                 >
                   Join
                 </button>
-              </form>
+              </div>
             </div>
 
             {/* Socials */}
