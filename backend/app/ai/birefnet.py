@@ -78,10 +78,19 @@ class BiRefNetEngine(AIEngine):
         return await asyncio.to_thread(postprocess_birefnet, prediction)
 
     async def process(self, image: Any) -> Any:
+        import gc
         await self.load_model()
         tensor, orig_size = await self.preprocess(image)
         prediction = await self.predict(tensor)
         mask = await self.postprocess((prediction, orig_size))
         
         from app.utils.image import apply_transparent_mask
-        return await asyncio.to_thread(apply_transparent_mask, image, mask)
+        result = await asyncio.to_thread(apply_transparent_mask, image, mask)
+        
+        # Cleanup tensors from memory (crucial for CPU-only environments)
+        del tensor
+        del prediction
+        del mask
+        gc.collect()
+        
+        return result

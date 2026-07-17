@@ -32,8 +32,9 @@ services:
       - uploads_data:/app/uploads
       - processed_data:/app/processed
       - logs_data:/app/logs
+      - hf_cache:/home/appuser/.cache/huggingface
     env_file:
-      - ./backend/.env
+      - ./backend/.env.production
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/cleanbg
       - REDIS_URL=redis://redis:6379/0
@@ -55,8 +56,9 @@ services:
       - uploads_data:/app/uploads
       - processed_data:/app/processed
       - logs_data:/app/logs
+      - hf_cache:/home/appuser/.cache/huggingface
     env_file:
-      - ./backend/.env
+      - ./backend/.env.production
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/cleanbg
       - REDIS_URL=redis://redis:6379/0
@@ -128,3 +130,4 @@ volumes:
   uploads_data:
   processed_data:
   logs_data:
+  hf_cache:
