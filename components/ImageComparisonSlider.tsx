@@ -118,7 +118,7 @@ const SmartImage = memo(({
       className={`object-cover pointer-events-none select-none ${className}`}
       draggable={false}
       priority 
-      unoptimized={isBlobOrData}
+      unoptimized={true}
       onLoad={onLoad}
       onError={onError}
       style={style}
@@ -332,7 +332,7 @@ const ImageComparisonSlider = forwardRef<ImageComparisonSliderRef, ImageComparis
             : "cursor-default"
         } ${className}`}
         style={{
-          aspectRatio,
+          aspectRatio: aspectRatio === "auto" ? undefined : aspectRatio,
           touchAction: "none",
           willChange: "transform",
           transform: "translate3d(0,0,0)",
@@ -353,15 +353,29 @@ const ImageComparisonSlider = forwardRef<ImageComparisonSliderRef, ImageComparis
         aria-disabled={disabled || !isCompleted}
       >
         {/* ================================================================== */}
+        {/* INVISIBLE SIZER (Dictates perfect aspect ratio)                    */}
+        {/* ================================================================== */}
+        {beforeImage && (
+          <img
+            src={beforeImage}
+            alt=""
+            className="w-full max-h-[65vh] object-contain opacity-0 pointer-events-none select-none relative z-0"
+            aria-hidden="true"
+          />
+        )}
+
+        {/* ================================================================== */}
         {/* CHECKERBOARD & AFTER IMAGE (Bottom Layer)                          */}
         {/* ================================================================== */}
         {showCheckerboard && <CheckerboardBackground />}
 
         {afterImage && (
           <motion.div className="absolute inset-0 z-0">
-            <SmartImage
+            <img
               src={afterImage}
               alt={afterAlt}
+              className="object-cover w-full h-full pointer-events-none select-none"
+              draggable={false}
               onLoad={() => {
                 setImagesLoaded((p) => ({ ...p, after: true }));
                 onImageLoaded?.("after");
@@ -389,9 +403,11 @@ const ImageComparisonSlider = forwardRef<ImageComparisonSliderRef, ImageComparis
             className="absolute inset-0 z-10 pointer-events-none"
             style={{ clipPath }}
           >
-            <SmartImage
+            <img
               src={beforeImage}
               alt={beforeAlt}
+              className="object-cover w-full h-full pointer-events-none select-none"
+              draggable={false}
               onLoad={() => {
                 setImagesLoaded((p) => ({ ...p, before: true }));
                 onImageLoaded?.("before");

@@ -7,7 +7,7 @@ import { useAuth } from '@/store/auth/context';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: '📊' },
-  { name: 'Editor', href: '/editor', icon: '🪄' },
+  { name: 'Editor', href: '/#upload', icon: '🪄' },
   { name: 'History', href: '/history', icon: '🕒' },
   { name: 'Settings', href: '/settings', icon: '⚙️' },
   { name: 'Profile', href: '/profile', icon: '👤' },
@@ -15,7 +15,7 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <aside className="w-64 bg-background border-r border-border h-full flex flex-col">
@@ -46,13 +46,23 @@ export function Sidebar() {
       </nav>
 
       <div className="p-4 border-t border-border mt-auto">
-        <button
-          onClick={logout}
-          className="w-full flex items-center gap-3 px-4 py-3 text-foreground/70 hover:bg-destructive/10 hover:text-destructive rounded-xl transition-colors"
-        >
-          <span className="text-lg">🚪</span>
-          Logout
-        </button>
+        {user ? (
+          <button
+            onClick={logout}
+            className="w-full flex items-center gap-3 px-4 py-3 text-foreground/70 hover:bg-destructive/10 hover:text-destructive rounded-xl transition-colors"
+          >
+            <span className="text-lg">🚪</span>
+            Logout
+          </button>
+        ) : (
+          <Link
+            href="/login"
+            className="w-full flex items-center gap-3 px-4 py-3 text-foreground/70 hover:bg-primary/10 hover:text-primary rounded-xl transition-colors"
+          >
+            <span className="text-lg">🔑</span>
+            Sign In
+          </Link>
+        )}
       </div>
     </aside>
   );

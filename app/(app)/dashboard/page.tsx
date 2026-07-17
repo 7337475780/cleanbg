@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/store/auth/context';
 
 export default function DashboardPage() {
@@ -33,9 +34,9 @@ export default function DashboardPage() {
         <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col">
           <h3 className="text-lg font-semibold mb-6">Quick Actions</h3>
           <div className="flex-1 flex flex-col gap-4">
-            <button className="w-full py-4 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl font-medium transition-colors flex items-center justify-center gap-2">
+            <Link href="/#upload" className="w-full py-4 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl font-medium transition-colors flex items-center justify-center gap-2">
               <span>🪄</span> Open Editor
-            </button>
+            </Link>
             <button className="w-full py-4 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-xl font-medium transition-colors flex items-center justify-center gap-2">
               <span>⚙️</span> API Settings
             </button>

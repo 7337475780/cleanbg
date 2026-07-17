@@ -150,8 +150,42 @@ async def download_image(job_id: str, background_tasks: BackgroundTasks, format:
     )
 
 @router.get("/preview/{job_id}")
-async def get_preview(job_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-    return await download_image(job_id, background_tasks=background_tasks, format="webp", db=db)
+async def get_preview(job_id: str, format: str = "webp", db: Session = Depends(get_db)):
+    repo = JobRepository(db)
+    job = repo.get_by_uuid(job_id)
+    if not job or job.status != "COMPLETED":
+        raise HTTPException(status_code=404, detail="Job not ready")
+        
+    if not job.output_image:
+        raise HTTPException(status_code=410, detail="Image has been permanently deleted from temporary storage")
+        
+    if not storage_provider.exists(job.output_image):
+        raise HTTPException(status_code=410, detail="File missing or expired")
+        
+    def iter_file():
+        with storage_provider.download(job.output_image) as f:
+            while chunk := f.read(8192):
+                yield chunk
+                
+    if format.lower() == "png":
+        return StreamingResponse(
+            iter_file(),
+            media_type="image/png"
+        )
+        
+    # Convert format on the fly if needed
+    file_path = Path(storage_provider.base_dir) / job.output_image
+    from app.utils.image import optimize_image
+    with Image.open(file_path) as img:
+        img_bytes = optimize_image(img, format=format)
+        
+    media_type = f"image/{format.lower()}"
+    if format.lower() == "jpg":
+        media_type = "image/jpeg"
+    return Response(
+        content=img_bytes, 
+        media_type=media_type
+    )
 
 @router.get("/thumbnail/{job_id}")
 async def get_thumbnail(job_id: str, db: Session = Depends(get_db)):

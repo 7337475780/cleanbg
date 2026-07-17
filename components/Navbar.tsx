@@ -40,6 +40,12 @@ export default function Navbar() {
       <div className="hidden lg:flex items-center gap-3">
         <ThemeToggle />
         <Link
+          href="/login"
+          className="text-[13.5px] font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+        >
+          Log In
+        </Link>
+        <Link
           href="/#upload"
           className="inline-flex items-center gap-1.5 px-4 py-2 text-[13.5px] font-semibold text-white rounded-lg gradient-bg-primary shadow-[0_2px_12px_rgba(37,99,235,0.3)] hover:shadow-[0_4px_16px_rgba(37,99,235,0.4)] hover:-translate-y-px transition-all duration-200"
         >

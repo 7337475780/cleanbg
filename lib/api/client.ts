@@ -70,9 +70,9 @@ class ApiClient {
           return this.handleResponse<T>(retryResponse);
         } else {
           this.clearTokens();
-          if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
-            window.location.href = '/login';
-          }
+          // if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+          //   window.location.href = '/login';
+          // }
           return { success: false, error: { message: 'Session expired', code: 'UNAUTHORIZED', status: 401 } };
         }
       }

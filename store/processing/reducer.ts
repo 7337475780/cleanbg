@@ -29,14 +29,14 @@ export function processingReducer(state: ProcessingState, action: ProcessingActi
     case 'UPDATE_JOB':
       return {
         ...state,
-        currentJob: state.currentJob?.id === action.payload.id ? action.payload : state.currentJob,
+        currentJob: (state.currentJob?.id === action.payload.id || state.currentJob?.id === 'temp') ? action.payload : state.currentJob,
         // Also update in history if it exists
         jobHistory: state.jobHistory.map(job => job.id === action.payload.id ? action.payload : job)
       };
     case 'END_JOB':
       return {
         ...state,
-        currentJob: state.currentJob?.id === action.payload.id ? action.payload : state.currentJob,
+        currentJob: (state.currentJob?.id === action.payload.id || state.currentJob?.id === 'temp') ? action.payload : state.currentJob,
         isProcessing: false,
         jobHistory: [action.payload, ...state.jobHistory.filter(job => job.id !== action.payload.id)]
       };

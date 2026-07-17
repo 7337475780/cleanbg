@@ -1,6 +1,6 @@
 import { ScrollLink as Link } from "./ScrollLink";
 import { ArrowUpRight, CheckCircle } from "lucide-react";
-import HeroWorkflowCard from "./HeroWorkflowCard";
+import ProductionEditor from "@/features/editor/ProductionEditor";
 import AnimatedBackground from "./AnimatedBackground";
 import { FadeIn } from "./FadeIn";
 
@@ -79,7 +79,7 @@ export default function HeroSection() {
           {/* RIGHT COLUMN: Workflow Card */}
           <div className="w-full lg:w-[48%] max-w-[540px] mx-auto lg:mx-0">
             <FadeIn delay={0.38}>
-              <HeroWorkflowCard />
+              <ProductionEditor />
             </FadeIn>
           </div>
 

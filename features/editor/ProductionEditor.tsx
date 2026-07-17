@@ -58,9 +58,16 @@ export default function ProductionEditor() {
     }
   }, [currentJob]);
 
+  const [activeTab, setActiveTab] = useState<'original' | 'compare' | 'result'>('compare');
+
   // --------------------------------------------------------------------------
   // HANDLERS
   // --------------------------------------------------------------------------
+
+  const handleTabClick = (tab: 'original' | 'compare' | 'result', position: number) => {
+    setActiveTab(tab);
+    sliderRef.current?.animateTo(position);
+  };
 
   const handleFile = useCallback((file: File) => {
     setErrorMessage("");
@@ -115,6 +122,7 @@ export default function ProductionEditor() {
     setOriginalImage(DEMO_ORIGINAL);
     setProcessedImage(DEMO_PROCESSED);
     setErrorMessage("");
+    setActiveTab('compare');
     sliderRef.current?.reset();
   };
 
@@ -154,6 +162,7 @@ export default function ProductionEditor() {
       onMouseLeave={handleMouseLeave}
       className={`relative flex flex-col w-full max-w-3xl mx-auto rounded-[28px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-3xl border transition-colors duration-300 shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] ${isDraggingOver ? "border-primary shadow-primary/20" : "border-gray-200 dark:border-white/10"
         }`}
+      id="upload"
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
@@ -173,20 +182,32 @@ export default function ProductionEditor() {
       <div className="flex justify-between items-center px-5 py-4 border-b border-gray-200/50 dark:border-white/5">
         <div className="bg-gray-100 dark:bg-white/5 p-1 rounded-full flex gap-1 border border-gray-200 dark:border-white/5 backdrop-blur-md">
           <button
-            onClick={() => sliderRef.current?.animateTo(100)}
-            className="px-4 py-1.5 rounded-full text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            onClick={() => handleTabClick('original', 100)}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              activeTab === 'original'
+                ? 'text-gray-900 dark:text-white bg-white dark:bg-[#18181B] shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
           >
             Original
           </button>
           <button
-            onClick={() => sliderRef.current?.animateTo(50)}
-            className="px-4 py-1.5 rounded-full text-xs font-semibold text-gray-900 dark:text-white bg-white dark:bg-[#18181B] shadow-sm transition-all"
+            onClick={() => handleTabClick('compare', 50)}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              activeTab === 'compare'
+                ? 'text-gray-900 dark:text-white bg-white dark:bg-[#18181B] shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
           >
             Compare
           </button>
           <button
-            onClick={() => sliderRef.current?.animateTo(0)}
-            className="px-4 py-1.5 rounded-full text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            onClick={() => handleTabClick('result', 0)}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              activeTab === 'result'
+                ? 'text-gray-900 dark:text-white bg-white dark:bg-[#18181B] shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
           >
             Result
           </button>
@@ -203,7 +224,7 @@ export default function ProductionEditor() {
           isMockResult={displayStatus !== 'demo'}
           errorMessage={errorMessage}
           className="rounded-2xl shadow-sm border border-gray-200/50 dark:border-white/5"
-          aspectRatio="16/9" // Slightly wider for the full editor
+          aspectRatio="auto"
         />
       </div>
 
@@ -272,10 +293,9 @@ export default function ProductionEditor() {
                 <span className="text-primary ml-auto">{Math.round(currentJob.progress)}%</span>
               </div>
               <div className="h-2 w-full bg-gray-200 dark:bg-[#27272A] rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${currentJob.progress}%` }}
+                <div
+                  className="h-full bg-blue-600 rounded-full transition-all duration-300 ease-out"
+                  style={{ width: `${currentJob.progress}%` }}
                 />
               </div>
             </motion.div>
