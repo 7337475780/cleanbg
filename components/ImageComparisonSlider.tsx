@@ -367,15 +367,7 @@ const ImageComparisonSlider = forwardRef<ImageComparisonSliderRef, ImageComparis
                 onImageLoaded?.("after");
               }}
               onError={() => onError?.(new Error("Failed to load after image"))}
-              className={isMockResult ? "grayscale opacity-80" : ""}
             />
-            {isMockResult && isCompleted && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="bg-black/75 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-md shadow-lg border border-white/10">
-                  Simulated API Result
-                </span>
-              </div>
-            )}
           </motion.div>
         )}
 

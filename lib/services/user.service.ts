@@ -7,7 +7,7 @@ export class UserService {
   async getProfile(): Promise<ApiResponse<User | null>> {
     try {
       const user = await userRepository.getUserProfile();
-      return apiClient.mockRequest(user, false, 300);
+      return { success: true, data: user as any };
     } catch (error: any) {
       return { success: false, error: { message: error.message, code: 'USER_ERROR', status: 500 } };
     }
@@ -16,7 +16,7 @@ export class UserService {
   async updateProfile(data: Partial<User>): Promise<ApiResponse<User>> {
     try {
       const updatedUser = await userRepository.updateProfile(data);
-      return apiClient.mockRequest(updatedUser, false, 800);
+      return { success: true, data: updatedUser };
     } catch (error: any) {
       return { success: false, error: { message: error.message, code: 'USER_UPDATE_ERROR', status: 500 } };
     }

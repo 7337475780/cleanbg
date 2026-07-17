@@ -7,7 +7,7 @@ export class HistoryService {
   async getHistory(page = 1, pageSize = 12): Promise<ApiResponse<HistoryListResponse>> {
     try {
       const data = await historyRepository.getHistory(page, pageSize);
-      return apiClient.mockRequest(data, false, 600);
+      return { success: true, data };
     } catch (error: any) {
       return { success: false, error: { message: error.message, code: 'FETCH_ERROR', status: 500 } };
     }
@@ -16,7 +16,7 @@ export class HistoryService {
   async deleteItem(id: string): Promise<ApiResponse<void>> {
     try {
       await historyRepository.deleteItem(id);
-      return apiClient.mockRequest(undefined, false, 400);
+      return { success: true, data: undefined };
     } catch (error: any) {
       return { success: false, error: { message: error.message, code: 'DELETE_ERROR', status: 500 } };
     }

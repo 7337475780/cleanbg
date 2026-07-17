@@ -25,11 +25,10 @@ export default function SettingsPage() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`text-left px-4 py-2.5 rounded-xl font-medium transition-colors whitespace-nowrap ${
-                  activeTab === tab 
-                    ? 'bg-primary text-primary-foreground' 
+                className={`text-left px-4 py-2.5 rounded-xl font-medium transition-colors whitespace-nowrap ${activeTab === tab
+                    ? 'bg-primary text-primary-foreground'
                     : 'text-foreground/70 hover:bg-foreground/5'
-                }`}
+                  }`}
               >
                 {tab}
               </button>
@@ -41,11 +40,11 @@ export default function SettingsPage() {
           {activeTab === 'General' && (
             <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
               <h2 className="text-xl font-semibold border-b border-border pb-4">General Preferences</h2>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Language</label>
-                  <select 
+                  <select
                     className="w-full md:w-1/2 p-2.5 bg-background border border-border rounded-xl focus:outline-none focus:border-primary"
                     value={settings.general.language}
                     onChange={(e) => updateSettings({ general: { ...settings.general, language: e.target.value } })}
@@ -62,20 +61,19 @@ export default function SettingsPage() {
           {activeTab === 'Appearance' && (
             <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
               <h2 className="text-xl font-semibold border-b border-border pb-4">Appearance</h2>
-              
+
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium mb-4">Theme</label>
                   <div className="flex gap-4">
                     {['light', 'dark', 'system'].map(theme => (
-                      <button 
+                      <button
                         key={theme}
                         onClick={() => updateSettings({ general: { ...settings.general, theme: theme as any } })}
-                        className={`flex-1 py-3 border rounded-xl capitalize font-medium transition-all ${
-                          settings.general.theme === theme 
-                            ? 'border-primary text-primary bg-primary/5' 
+                        className={`flex-1 py-3 border rounded-xl capitalize font-medium transition-all ${settings.general.theme === theme
+                            ? 'border-primary text-primary bg-primary/5'
                             : 'border-border text-foreground/70 hover:bg-foreground/5'
-                        }`}
+                          }`}
                       >
                         {theme}
                       </button>
@@ -85,19 +83,19 @@ export default function SettingsPage() {
               </div>
             </div>
           )}
-          
+
           {activeTab === 'API' && (
             <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
               <h2 className="text-xl font-semibold border-b border-border pb-4">API Configuration</h2>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">API Key</label>
                   <div className="flex gap-2">
-                    <input 
-                      type="password" 
-                      readOnly 
-                      value={settings.api.apiKey || ''} 
+                    <input
+                      type="password"
+                      readOnly
+                      value={settings.api.apiKey || ''}
                       className="w-full p-2.5 bg-foreground/5 border border-border rounded-xl font-mono text-sm"
                     />
                     <button className="px-4 py-2 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-colors">

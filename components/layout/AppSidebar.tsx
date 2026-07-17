@@ -52,7 +52,7 @@ function NavLink({ href, icon: Icon, label, onClick }: {
 export function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
   const { user, logout } = useAuth();
 
-  const SidebarContent = () => (
+  const renderSidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="px-4 py-5 flex items-center gap-2.5 border-b border-gray-100 dark:border-white/[0.06]">
@@ -112,7 +112,7 @@ export function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
     <>
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col w-[220px] shrink-0 bg-white dark:bg-[#09090B] border-r border-gray-100 dark:border-white/[0.06] h-screen sticky top-0">
-        <SidebarContent />
+        {renderSidebarContent()}
       </aside>
 
       {/* Mobile Overlay */}
@@ -127,7 +127,7 @@ export function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
             >
               <X className="w-4 h-4" />
             </button>
-            <SidebarContent />
+            {renderSidebarContent()}
           </aside>
         </div>
       )}

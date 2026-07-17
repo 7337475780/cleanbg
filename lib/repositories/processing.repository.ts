@@ -1,50 +1,65 @@
 import { ProcessingJob } from '@/types/processing';
-
+import { apiClient } from '../api/client';
 
 export interface ProcessingRepository {
   createJob(file: File): Promise<ProcessingJob>;
   getJob(id: string): Promise<ProcessingJob | null>;
   cancelJob(id: string): Promise<void>;
+  retryJob(id: string): Promise<string>;
 }
 
-export class MockProcessingRepository implements ProcessingRepository {
-  private jobs: Map<string, ProcessingJob> = new Map();
-
+export class RestProcessingRepository implements ProcessingRepository {
   async createJob(file: File): Promise<ProcessingJob> {
-    const newJob: ProcessingJob = {
-      id: crypto.randomUUID(),
-      status: 'idle',
-      progress: 0,
-      originalImage: URL.createObjectURL(file), // Mock URL
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await apiClient.post<any>('/upload', formData);
+    if (!response.success || !response.data) {
+      throw new Error(response.error?.message || 'Failed to upload image');
+    }
+    
+    return {
+      id: response.data.job_id,
+      status: response.data.status.toLowerCase(),
+      progress: response.data.progress || 0,
+      originalImage: URL.createObjectURL(file), // Still useful for immediate local preview
       processedImage: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    
-    this.jobs.set(newJob.id, newJob);
-    return newJob;
   }
 
   async getJob(id: string): Promise<ProcessingJob | null> {
-    return this.jobs.get(id) || null;
+    const response = await apiClient.get<any>(`/jobs/${id}`);
+    if (!response.success || !response.data) {
+      return null;
+    }
+    
+    return {
+      id: response.data.id,
+      status: response.data.status.toLowerCase(),
+      progress: response.data.progress || 0,
+      originalImage: '', // The backend doesn't currently return the original image URL in the jobs endpoint directly, it uses the local preview in the UI state
+      processedImage: response.data.output_image ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}/preview/${response.data.id}` : null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
   }
 
   async cancelJob(id: string): Promise<void> {
-    const job = this.jobs.get(id);
-    if (job) {
-      job.status = 'error';
-      job.error = 'Job cancelled by user';
-      job.updatedAt = new Date().toISOString();
+    const response = await apiClient.post(`/jobs/${id}/cancel`);
+    if (!response.success) {
+      throw new Error(response.error?.message || 'Failed to cancel job');
     }
   }
 
-  // Mock internal update for simulating progress
-  _updateJobStatus(id: string, updates: Partial<ProcessingJob>) {
-    const job = this.jobs.get(id);
-    if (job) {
-      Object.assign(job, updates, { updatedAt: new Date().toISOString() });
+  async retryJob(id: string): Promise<string> {
+    const response = await apiClient.post<any>(`/jobs/${id}/retry`);
+    if (!response.success || !response.data) {
+      throw new Error(response.error?.message || 'Failed to retry job');
     }
+    return response.data.new_job_id;
   }
 }
 
-export const processingRepository = new MockProcessingRepository();
+export const processingRepository = new RestProcessingRepository();

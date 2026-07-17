@@ -9,9 +9,9 @@ export class AuthService {
       // In a real app, the repository might throw if unauthenticated, 
       // but the service layer catches and maps to standard responses.
       // Here we simulate the network request wrapping the repository call.
-      
+
       const user = await authRepository.login(email, password);
-      return apiClient.mockRequest(user, false, 1200); // Simulate network delay
+      return { success: true, data: user };
     } catch (error: any) {
       return {
         success: false,
@@ -27,7 +27,7 @@ export class AuthService {
   async signup(email: string, password: string, name: string): Promise<ApiResponse<User>> {
     try {
       const user = await authRepository.signup(email, password, name);
-      return apiClient.mockRequest(user, false, 1500);
+      return { success: true, data: user };
     } catch (error: any) {
       return {
         success: false,
@@ -38,12 +38,12 @@ export class AuthService {
 
   async logout(): Promise<ApiResponse<void>> {
     await authRepository.logout();
-    return apiClient.mockRequest(undefined, false, 500);
+    return { success: true, data: undefined };
   }
 
   async getCurrentUser(): Promise<ApiResponse<User | null>> {
     const user = await authRepository.getCurrentUser();
-    return apiClient.mockRequest(user, false, 300);
+    return { success: true, data: user };
   }
 }
 

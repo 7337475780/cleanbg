@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
           We've sent password reset instructions to <br />
           <span className="font-medium text-foreground">{email}</span>
         </p>
-        <Link 
+        <Link
           href="/login"
           className="inline-block mt-4 text-primary font-semibold hover:underline"
         >
@@ -48,8 +48,8 @@ export default function ForgotPasswordPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1.5 text-foreground/80">Email Address</label>
-          <input 
-            type="email" 
+          <input
+            type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
@@ -57,8 +57,8 @@ export default function ForgotPasswordPage() {
           />
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="w-full py-3 mt-2 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-colors"
         >
           Send Reset Link

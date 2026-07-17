@@ -1,24 +1,36 @@
 import { User } from '@/types/user';
+import { apiClient } from '../api/client';
 
 export interface UserRepository {
   getUserProfile(): Promise<User | null>;
   updateProfile(data: Partial<User>): Promise<User>;
+  getDashboardStats(): Promise<any>;
 }
 
-export class MockUserRepository implements UserRepository {
+export class RestUserRepository implements UserRepository {
   async getUserProfile(): Promise<User | null> {
-    const { authRepository } = await import('./auth.repository');
-    return authRepository.getCurrentUser();
+    const response = await apiClient.get<User>('/users/me');
+    if (!response.success) {
+      return null;
+    }
+    return response.data || null;
   }
 
   async updateProfile(data: Partial<User>): Promise<User> {
-    const { authRepository } = await import('./auth.repository');
-    const user = await authRepository.getCurrentUser();
-    if (!user) throw new Error('Not authenticated');
-    
-    // In a real mock, we might update a global state or class property here.
-    return { ...user, ...data };
+    const response = await apiClient.patch<User>('/users/me/profile', data);
+    if (!response.success || !response.data) {
+      throw new Error(response.error?.message || 'Failed to update profile');
+    }
+    return response.data;
+  }
+
+  async getDashboardStats(): Promise<any> {
+    const response = await apiClient.get<any>('/users/me/dashboard');
+    if (!response.success || !response.data) {
+      throw new Error(response.error?.message || 'Failed to fetch dashboard stats');
+    }
+    return response.data;
   }
 }
 
-export const userRepository = new MockUserRepository();
+export const userRepository = new RestUserRepository();

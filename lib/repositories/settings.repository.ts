@@ -1,38 +1,55 @@
 import { Settings } from '@/types/settings';
+import { apiClient } from '../api/client';
 
 export interface SettingsRepository {
   getSettings(): Promise<Settings>;
   updateSettings(updates: Partial<Settings>): Promise<Settings>;
 }
 
-export class MockSettingsRepository implements SettingsRepository {
+export class RestSettingsRepository implements SettingsRepository {
   private defaultSettings: Settings = {
     general: { theme: 'system', language: 'en' },
     appearance: { reducedMotion: false, highContrast: false },
     downloads: { defaultFormat: 'png', preserveMetadata: true },
     notifications: { emailAlerts: true, processingComplete: true },
     privacy: { shareData: false },
-    api: { apiKey: 'sk_test_1234567890abcdef' },
+    api: { apiKey: '' },
   };
 
   async getSettings(): Promise<Settings> {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('cleanbg_settings');
-      if (stored) return JSON.parse(stored);
+    const response = await apiClient.get<any>('/settings');
+    if (!response.success || !response.data) {
+      // Return default if error
+      return this.defaultSettings;
     }
-    return this.defaultSettings;
+    
+    // Map backend response to frontend expected format
+    return {
+      general: { theme: response.data.theme || 'system', language: 'en' },
+      appearance: { reducedMotion: false, highContrast: false },
+      downloads: { defaultFormat: response.data.default_format || 'png', preserveMetadata: true },
+      notifications: { emailAlerts: response.data.notifications !== false, processingComplete: true },
+      privacy: { shareData: response.data.privacy !== false },
+      api: { apiKey: '' }, // we can fetch API keys separately
+    };
   }
 
   async updateSettings(updates: Partial<Settings>): Promise<Settings> {
-    const current = await this.getSettings();
-    const newSettings = { ...current, ...updates }; // Deep merge might be better in real app
+    const payload = {
+      theme: updates.general?.theme,
+      download_quality: 'high',
+      default_format: updates.downloads?.defaultFormat,
+      notifications: updates.notifications?.emailAlerts,
+      privacy: updates.privacy?.shareData,
+    };
     
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cleanbg_settings', JSON.stringify(newSettings));
+    const response = await apiClient.patch<any>('/settings', payload);
+    if (!response.success) {
+      throw new Error(response.error?.message || 'Failed to update settings');
     }
     
-    return newSettings;
+    return this.getSettings();
   }
 }
 
-export const settingsRepository = new MockSettingsRepository();
+export const settingsRepository = new RestSettingsRepository();

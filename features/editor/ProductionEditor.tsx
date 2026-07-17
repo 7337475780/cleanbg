@@ -12,21 +12,21 @@ const DEMO_PROCESSED = DEMO_ORIGINAL;
 
 export default function ProductionEditor() {
   const { currentJob, processImage, clearJob } = useProcessing();
-  
+
   const [originalImage, setOriginalImage] = useState<string>(DEMO_ORIGINAL);
   const [processedImage, setProcessedImage] = useState<string>(DEMO_PROCESSED);
-  
+
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const sliderRef = useRef<ImageComparisonSliderRef>(null);
-  
+
   // 3D Tilt State
   const prefersReducedMotion = useReducedMotion();
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
-  
+
   const springConfig = { damping: 30, stiffness: 400, mass: 0.5 };
   const rotateX = useSpring(useTransform(mouseY, [0, 1], [3, -3]), springConfig);
   const rotateY = useSpring(useTransform(mouseX, [0, 1], [-3, 3]), springConfig);
@@ -49,11 +49,11 @@ export default function ProductionEditor() {
       if (currentJob.originalImage) setOriginalImage(currentJob.originalImage);
       if (currentJob.processedImage) setProcessedImage(currentJob.processedImage);
       if (currentJob.error) setErrorMessage(currentJob.error);
-      
+
       if (currentJob.status === 'completed' && sliderRef.current) {
         sliderRef.current.animateTo(50, 0.6);
       } else if (currentJob.status !== 'idle' && currentJob.status !== 'error' && sliderRef.current) {
-         sliderRef.current.animateTo(100, 0); // Show original while processing
+        sliderRef.current.animateTo(100, 0); // Show original while processing
       }
     }
   }, [currentJob]);
@@ -134,7 +134,7 @@ export default function ProductionEditor() {
     if (currentJob.status === "uploading") return "uploading";
     return "processing";
   };
-  
+
   const displayStatus = currentJob ? currentJob.status : 'demo';
 
   const formatStatusText = (status: string) => {
@@ -152,9 +152,8 @@ export default function ProductionEditor() {
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative flex flex-col w-full max-w-3xl mx-auto rounded-[28px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-3xl border transition-colors duration-300 shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] ${
-        isDraggingOver ? "border-primary shadow-primary/20" : "border-gray-200 dark:border-white/10"
-      }`}
+      className={`relative flex flex-col w-full max-w-3xl mx-auto rounded-[28px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-3xl border transition-colors duration-300 shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] ${isDraggingOver ? "border-primary shadow-primary/20" : "border-gray-200 dark:border-white/10"
+        }`}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
